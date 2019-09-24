@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">ExpenseManager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="xpnse">XPNSE</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="don_t_have_an_account_sign_up_here">Don\'t have an account? Sign up here</string>
+    <string name="registration">REGISTRATION</string>
+    <string name="email_register">Email:</string>
+    <string name="password_register">Password:</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here</string>
+    <string name="type">Type:</string>
+    <string name="amount">Amount:</string>
+    <string name="date">24 July 2019</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="_000_00">000.00</string>
+    <string name="income_dash">Income:</string>
+    <string name="expense_dash">Expense:</string>
+    <string name="total_amount_spent">Total Amount Spent:</string>
+    <string name="_0">0</string>
+    <string name="total_income">Total Income:</string>
+    <string name="add_item">Add Item</string>
+    <string name="details">Details:</string>
+    <string name="save">SAVE</string>
+    <string name="_19_july_2019">19 July,2019</string>
+    <string name="title">Title</string>
+    <string name="details_item">Details</string>
+    <string name="_5000">5000</string>
+    <string name="expense_manager">Expense Manager</string>
+    <string name="edit_item">EDIT ITEM</string>
+    <string name="delete">DELETE</string>
+    <string name="update">UPDATE</string>
+    <string name="log_out">Log out</string>
+
+</resources>

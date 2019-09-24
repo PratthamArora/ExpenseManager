@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="5dp"
+    app:cardElevation="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/type_expense_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/type"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/colorPrimary"
+
+            />
+
+        <TextView
+            android:id="@+id/amount_expense_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/amount"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/expense_ammount_color" />
+
+        <TextView
+            android:id="@+id/date_expense_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/date"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+
+            />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
