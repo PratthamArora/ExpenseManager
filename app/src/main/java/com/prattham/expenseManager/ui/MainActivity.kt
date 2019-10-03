@@ -1,4 +1,4 @@
-package com.prattham.expenseManager
+package com.prattham.expenseManager.ui
 
 
 import android.app.ProgressDialog
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.prattham.expenseManager.R
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity

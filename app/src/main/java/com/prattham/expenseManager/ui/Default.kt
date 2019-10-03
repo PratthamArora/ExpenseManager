@@ -1,4 +1,4 @@
-package com.prattham.expenseManager
+package com.prattham.expenseManager.ui
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,6 +9,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.prattham.expenseManager.R
+import com.prattham.expenseManager.fragments.DashBoardFragment
+import com.prattham.expenseManager.fragments.ExpenseFragment
+import com.prattham.expenseManager.fragments.IncomeFragment
 import kotlinx.android.synthetic.main.appbar_layout.*
 import org.jetbrains.anko.startActivity
 
@@ -43,7 +47,10 @@ class Default : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
 
         navView.setNavigationItemSelectedListener(this)
 
-        supportFragmentManager.beginTransaction().replace(R.id.main_frame, DashBoardFragment())
+        supportFragmentManager.beginTransaction().replace(
+            R.id.main_frame,
+            DashBoardFragment()
+        )
             .commit()
 
 
@@ -52,21 +59,30 @@ class Default : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
 
                 R.id.dashboard -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frame, DashBoardFragment()).commit()
+                        .replace(
+                            R.id.main_frame,
+                            DashBoardFragment()
+                        ).commit()
                     supportActionBar?.title = "XPNSE"
                     true
                 }
 
                 R.id.income -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frame, IncomeFragment()).commit()
+                        .replace(
+                            R.id.main_frame,
+                            IncomeFragment()
+                        ).commit()
                     supportActionBar?.title = "INCOME"
                     true
                 }
 
                 R.id.expense -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frame, ExpenseFragment()).commit()
+                        .replace(
+                            R.id.main_frame,
+                            ExpenseFragment()
+                        ).commit()
                     supportActionBar?.title = "EXPENSE"
                     true
                 }

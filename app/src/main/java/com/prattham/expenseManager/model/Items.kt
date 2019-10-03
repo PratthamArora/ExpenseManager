@@ -1,4 +1,4 @@
-package com.prattham.expenseManager.Modal
+package com.prattham.expenseManager.model
 
 class Items {
 

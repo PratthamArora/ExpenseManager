@@ -1,4 +1,4 @@
-package com.prattham.expenseManager
+package com.prattham.expenseManager.fragments
 
 
 import android.annotation.SuppressLint
@@ -20,7 +20,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.prattham.expenseManager.Modal.Items
+import com.prattham.expenseManager.R
+import com.prattham.expenseManager.model.Items
 import kotlinx.android.synthetic.main.dashboard_income.view.*
 import kotlinx.android.synthetic.main.dashboart_expense.view.*
 import kotlinx.android.synthetic.main.fragment_dash_board.*
@@ -45,8 +46,8 @@ class DashBoardFragment : Fragment() {
         FirebaseDatabase.getInstance().reference
     }
 
-    var tot_amnt_inc = 0.0
-    var tot_amnt_exp = 0.0
+    var totalAmountIncome = 0.0
+    var totalAmountExpense = 0.0
 
     private val mId = mAuth.currentUser?.uid
     private val mDatabaseExp = mId?.let { ref.child("Expenses").child(it) }
@@ -60,8 +61,14 @@ class DashBoardFragment : Fragment() {
         val myView = inflater.inflate(R.layout.fragment_dash_board, container, false)
         //ANIMATION CONNECT
 
-        fadeOpen = AnimationUtils.loadAnimation(activity, R.anim.fab_open)
-        fadeClose = AnimationUtils.loadAnimation(activity, R.anim.fab_close)
+        fadeOpen = AnimationUtils.loadAnimation(
+            activity,
+            R.anim.fab_open
+        )
+        fadeClose = AnimationUtils.loadAnimation(
+            activity,
+            R.anim.fab_close
+        )
 
 
         //DASHBOARD TOTAL INCOME RESULT
@@ -77,9 +84,9 @@ class DashBoardFragment : Fragment() {
 
                 for (snap in p0.children) {
                     val items = snap.getValue(Items::class.java)
-                    tot_amnt_inc += items!!.amount
+                    totalAmountIncome += items!!.amount
 
-                    myView.income_set_result.text = "Rs. $tot_amnt_inc"
+                    myView.income_set_result.text = "Rs. $totalAmountIncome"
 
                 }
 
@@ -98,9 +105,9 @@ class DashBoardFragment : Fragment() {
 
                 for (snap in p0.children) {
                     val items = snap.getValue(Items::class.java)
-                    tot_amnt_exp += items!!.amount
+                    totalAmountExpense += items!!.amount
 
-                    myView.expense_set_result.text = "Rs. $tot_amnt_exp"
+                    myView.expense_set_result.text = "Rs. $totalAmountExpense"
                 }
             }
         })

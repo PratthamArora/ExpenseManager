@@ -1,4 +1,4 @@
-package com.prattham.expenseManager
+package com.prattham.expenseManager.fragments
 
 
 import android.annotation.SuppressLint
@@ -19,9 +19,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.prattham.expenseManager.Modal.Items
-import kotlinx.android.synthetic.main.fragment_income.*
-import kotlinx.android.synthetic.main.fragment_income.view.*
+import com.prattham.expenseManager.R
+import com.prattham.expenseManager.model.Items
+import kotlinx.android.synthetic.main.fragment_expense.*
+import kotlinx.android.synthetic.main.fragment_expense.view.*
 import kotlinx.android.synthetic.main.input_layout.*
 import kotlinx.android.synthetic.main.input_layout.view.*
 import kotlinx.android.synthetic.main.item_data.view.*
@@ -31,15 +32,14 @@ import java.text.DateFormat
 import java.util.*
 
 
-@Suppress("DEPRECATION")
-class IncomeFragment : Fragment() {
-
+class ExpenseFragment : Fragment() {
     private val mAuth by lazy {
         FirebaseAuth.getInstance()
     }
     val ref by lazy {
-        FirebaseDatabase.getInstance().reference.child("Income")
+        FirebaseDatabase.getInstance().reference.child("Expenses")
     }
+
 
     private val mId = mAuth.currentUser?.uid
     private val mDatabase = mId?.let { ref.child(it) }
@@ -47,14 +47,14 @@ class IncomeFragment : Fragment() {
     private var type: String? = null
     private var amount: Double = 0.0
     private var details: String? = null
-    private var postkey: String? = null
+    private var postKey: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val myView = inflater.inflate(R.layout.fragment_income, container, false)
+        val myView = inflater.inflate(R.layout.fragment_expense, container, false)
 
 
         mDatabase?.keepSynced(true)
@@ -62,33 +62,112 @@ class IncomeFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         layoutManager.stackFromEnd = true
         layoutManager.reverseLayout = true
-        myView.recycler_home_income.setHasFixedSize(true)
-        myView.recycler_home_income.layoutManager = layoutManager
+        myView.recycler_home_expense.setHasFixedSize(true)
+        myView.recycler_home_expense.layoutManager = layoutManager
 
-        //Total Income
+        //Total Amount
         mDatabase?.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
             @SuppressLint("SetTextI18n")
             override fun onDataChange(p0: DataSnapshot) {
-                var tot_amnt = 0.0
+                var totAmnt = 0.0
 
                 for (snap in p0.children) {
                     val items = snap.getValue(Items::class.java)
-                    tot_amnt += items!!.amount
+                    totAmnt += items!!.amount
 
-                    myView.total_amount_income.text = "Rs. $tot_amnt"
+                    myView.total_amount_expense!!.text = "Rs. $totAmnt"
                 }
             }
         })
 
 
-        myView.btn_fab_income.setOnClickListener {
+        myView.btn_fab_expense.setOnClickListener {
             customDialog()
         }
 
         return myView
+    }
+
+
+    private fun firebaseExpenseCall() {
+        val options = FirebaseRecyclerOptions.Builder<Items>()
+            .setQuery(ref.child("/${mAuth.currentUser?.uid}"), Items::class.java)
+            .setLifecycleOwner(this)
+            .build()
+
+        val adapter = object : FirebaseRecyclerAdapter<Items, MyViewHolder>(options) {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
+                val itemView = LayoutInflater.from(context)
+                    .inflate(R.layout.item_data, parent, false)
+                return MyViewHolder(itemView)
+            }
+
+            override fun onBindViewHolder(holder: MyViewHolder, p1: Int, p2: Items) {
+                val placeid = getRef(p1).key.toString()
+
+
+                ref.child(placeid)
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                            //toast("Error Occurred")
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+
+
+                            if (p0.value == null) {
+                                progress_bar_expense!!.visibility = View.GONE
+                                //check here
+                                Log.i(
+                                    "PROBAR",
+                                    "progress bar called exist:  $progress_bar_expense"
+                                )
+                            } else {
+                                Log.i(
+                                    "PROBAR",
+                                    "progress bar called not exists:  $progress_bar_expense"
+                                )
+
+                            }
+
+                            with(holder.myview) {
+                                tv_type.text = p2.type
+                                tv_date.text = p2.date
+                                tv_amount.text = p2.amount.toString()
+                                tv_detail.text = p2.details
+
+                            }
+                            //UPDATE ITEM
+                            holder.myview.setOnClickListener {
+
+                                postKey = getRef(p1).key
+                                type = p2.type
+                                details = p2.details
+                                amount = p2.amount
+
+
+
+                                updateData()
+                            }
+
+
+                        }
+
+                    }
+                    )
+
+
+            }
+
+
+        }
+        recycler_home_expense.adapter = adapter
+        adapter.startListening()
+
     }
 
 
@@ -143,8 +222,8 @@ class IncomeFragment : Fragment() {
 
             id?.let { it1 -> mDatabase?.ref?.child(it1)?.setValue(items) }
 
-
-            ll_view_income.snackbar("Item Added")
+            //toast("Item Added")
+            ll_view_expense.snackbar("Item Added")
             dialog.dismiss()
 
         }
@@ -153,90 +232,7 @@ class IncomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        val options = FirebaseRecyclerOptions.Builder<Items>()
-            .setQuery(ref.child("/${mAuth.currentUser?.uid}"), Items::class.java)
-            .setLifecycleOwner(this)
-            .build()
-
-        val adapter = object : FirebaseRecyclerAdapter<Items, MyViewHolder>(options) {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
-                val itemView = LayoutInflater.from(context)
-                    .inflate(R.layout.item_data, parent, false)
-                return MyViewHolder(itemView)
-
-
-            }
-
-
-            override fun onBindViewHolder(holder: MyViewHolder, p1: Int, p2: Items) {
-                val placeid = getRef(p1).key.toString()
-
-                //CHANGING COLOR OF INCOME AMOUNT
-                holder.myview.tv_amount.setTextColor(resources.getColor(R.color.income_tv_amount))
-
-
-                ref.child(placeid)
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError) {
-                            // Toast.makeText(context,"bar called",Toast.LENGTH_SHORT).show()
-
-                        }
-
-
-                        override fun onDataChange(p0: DataSnapshot) {
-
-
-                            if (p0.value == null) {
-                                progress_bar_income.visibility = View.GONE
-                                //check here
-                                Log.i(
-                                    "PROBAR",
-                                    "progress bar called exist:  $progress_bar_income"
-                                )
-                            } else {
-                                Log.i(
-                                    "PROBAR",
-                                    "progress bar called not exists:  $progress_bar_income"
-                                )
-
-                            }
-
-
-                            with(holder.myview) {
-                                tv_type.text = p2.type
-                                tv_date.text = p2.date
-                                tv_amount.text = p2.amount.toString()
-                                tv_detail.text = p2.details
-
-                            }
-                            //UPDATE ITEM
-                            holder.myview.setOnClickListener {
-
-                                postkey = getRef(p1).key
-                                type = p2.type
-                                details = p2.details
-                                amount = p2.amount
-
-
-
-                                updateData()
-                            }
-
-
-                        }
-
-                    }
-                    )
-
-
-            }
-
-
-        }
-        recycler_home_income.adapter = adapter
-        adapter.startListening()
-
+        firebaseExpenseCall()
 
     }
 
@@ -245,49 +241,49 @@ class IncomeFragment : Fragment() {
 
     fun updateData() {
 
-        val update_Dialog = AlertDialog.Builder(context!!)
+        val updateDialog = AlertDialog.Builder(context!!)
         val inflater = LayoutInflater.from(context)
-        val update_View = inflater.inflate(R.layout.update_data, null)
-        val up_dialog = update_Dialog.create()
-        up_dialog.setView(update_View)
-        up_dialog.show()
+        val updateView = inflater.inflate(R.layout.update_data, null)
+        val upDialog = updateDialog.create()
+        upDialog.setView(updateView)
+        upDialog.show()
 
 
-        update_View.et_type_upd?.setText(type)
-        update_View.et_type_upd?.setSelection(type!!.length)
-        update_View.et_amount_upd?.setText(amount.toString())
-        update_View.et_amount_upd?.setSelection(amount.toString().length)
-        update_View.et_details_upd?.setText(details)
-        update_View.et_details_upd?.setSelection(details!!.length)
+        updateView.et_type_upd?.setText(type)
+        updateView.et_type_upd?.setSelection(type!!.length)
+        updateView.et_amount_upd?.setText(amount.toString())
+        updateView.et_amount_upd?.setSelection(amount.toString().length)
+        updateView.et_details_upd?.setText(details)
+        updateView.et_details_upd?.setSelection(details!!.length)
 
 
 
-        update_View.btn_Update.setOnClickListener {
+        updateView.btn_Update.setOnClickListener {
 
             val date = DateFormat.getDateInstance().format(Date())
 
-            type = update_View.et_type_upd.text.toString()
-            details = update_View.et_details_upd.text.toString()
-            amount = update_View.et_amount_upd.text.toString().toDouble()
+            type = updateView.et_type_upd.text.toString()
+            details = updateView.et_details_upd.text.toString()
+            amount = updateView.et_amount_upd.text.toString().toDouble()
 
-            val items = postkey?.let { it1 -> Items(type!!, amount, details!!, date, it1) }
+            val items = postKey?.let { it1 -> Items(type!!, amount, details!!, date, it1) }
 
-            postkey?.let { it1 -> mDatabase?.ref?.child(it1)?.setValue(items) }
+            postKey?.let { it1 -> mDatabase?.ref?.child(it1)?.setValue(items) }
 
-            //toast("Item Updated")
-            ll_view_income.snackbar("Item Updated")
+            ll_view_expense.snackbar("Item Updated")
 
-            up_dialog.dismiss()
+            upDialog.dismiss()
 
         }
 
-        update_View.btn_delete.setOnClickListener {
-            mDatabase?.ref?.child(postkey!!)?.removeValue()
-            ll_view_income.snackbar("Item Deleted", "Undo") {
-                up_dialog.show()
+        updateView.btn_delete.setOnClickListener {
+            mDatabase?.ref?.child(postKey!!)?.removeValue()
+            ll_view_expense.snackbar("Item Deleted", "Undo") {
+                upDialog.show()
             }
-            up_dialog.dismiss()
+            upDialog.dismiss()
         }
     }
+
 
 }
