@@ -4,18 +4,14 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#4285f4</color>
     <color name="toolbar_color">#FFAEF509</color>
-
     <color name="nav_header">#FFEAA00C</color>
-
-
     <color name="dasboard_color">#9B6309</color>
-
     <color name="income_coloer">#FF240740</color>
-
     <color name="expense_color">#FF6C042E</color>
-
     <color name="date_color">#FF270648</color>
     <color name = "income_tv_amount">#08C610</color>
-
     <color name="expense_ammount_color">#FFEC1D06</color>
+    <color name="about_app_root_layout">#FBFAFB</color>
+    <color name="about_app_profileImage">#0BC9E3</color>
+    <color name="textcolor">#333639</color>
 </resources>

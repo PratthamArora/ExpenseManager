@@ -114,6 +114,9 @@ class Default : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity<MainActivity>()
                 finish()
             }
+            R.id.mainAboutApp -> {
+                startActivity<AboutAppActivity>()
+            }
         }
 
 
