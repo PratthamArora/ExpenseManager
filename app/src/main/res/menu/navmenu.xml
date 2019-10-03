@@ -4,11 +4,9 @@
 
     <item
         android:id="@+id/mainLogout"
-        android:icon="@drawable/ic_people_black_24dp"
         android:title="@string/log_out" />
     <item
         android:id="@+id/mainAboutApp"
-        android:icon="@drawable/ic_portrait_black_24dp"
         android:title="@string/about_app" />
 
 </menu>
