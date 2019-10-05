@@ -2,12 +2,14 @@ package com.prattham.expenseManager.fragments
 
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +22,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.prattham.expenseManager.R
+import com.prattham.expenseManager.helper.MyButton
+import com.prattham.expenseManager.helper.MySwipeHelper
+import com.prattham.expenseManager.listener.MyClickListener
 import com.prattham.expenseManager.model.Items
 import kotlinx.android.synthetic.main.fragment_expense.*
 import kotlinx.android.synthetic.main.fragment_expense.view.*
@@ -49,6 +54,7 @@ class ExpenseFragment : Fragment() {
     private var details: String? = null
     private var postKey: String? = null
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +70,48 @@ class ExpenseFragment : Fragment() {
         layoutManager.reverseLayout = true
         myView.recycler_home_expense.setHasFixedSize(true)
         myView.recycler_home_expense.layoutManager = layoutManager
+
+        //Add Swipe
+        val swipe = object : MySwipeHelper(context!!, myView.recycler_home_expense, 200) {
+            override fun instantiateMyButton(
+                viewHolder: RecyclerView.ViewHolder,
+                buffer: MutableList<MyButton>
+            ) {
+                //Add button
+                buffer.add(
+                    MyButton(
+                        context,
+                        "Delete",
+                        30,
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        object : MyClickListener {
+                            override fun onClick(pos: Int) {
+                                Toast.makeText(context, "Delete ID $pos", Toast.LENGTH_SHORT).show()
+                            }
+
+                        })
+                )
+                buffer.add(
+                    MyButton(
+                        context,
+                        "Update",
+                        40,
+                        R.drawable.ic_edit_white_24dp,
+                        Color.parseColor("#FF9502"),
+                        object : MyClickListener {
+                            override fun onClick(pos: Int) {
+                                Toast.makeText(context, "Update ID $pos", Toast.LENGTH_SHORT).show()
+
+
+                            }
+
+                        })
+                )
+            }
+
+        }
+
 
         //Total Amount
         mDatabase?.addValueEventListener(object : ValueEventListener {
@@ -141,6 +189,7 @@ class ExpenseFragment : Fragment() {
                                 tv_detail.text = p2.details
 
                             }
+
                             //UPDATE ITEM
                             holder.myview.setOnClickListener {
 
@@ -167,6 +216,7 @@ class ExpenseFragment : Fragment() {
         }
         recycler_home_expense.adapter = adapter
         adapter.startListening()
+
 
     }
 
