@@ -8,3 +8,17 @@ Some of the Key features of the app include:
 •	Income is shown in green and expenses are shown in red 
 •	The app follows Google’s material design guidelines
 •	The user data is stored on the firebase server
+
+# Screenshots
+
+<img src = "app/images/1.png" width = "250" >
+
+<img src = "app/images/2.png" width = "250" > <img src = "app/images/3.png" width = "250" > 
+
+<img src = "app/images/4.png" width = "250" > <img src = "app/images/5.png" width = "250" >
+
+<img src = "app/images/6.png" width = "250" > <img src = "app/images/7.png" width = "250" > 
+
+<img src = "app/images/8.png" width = "250" > <img src = "app/images/9.png" width = "250" >
+
+
