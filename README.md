@@ -1,4 +1,4 @@
-# ExpenseManager
+# ExpenseManager [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 A simple app to keep track of your income and expenses using Firebase as server
 Some of the Key features of the app include:
 •	User login/registration and forget password feature using firebase
